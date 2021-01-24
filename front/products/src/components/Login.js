@@ -34,14 +34,8 @@ class Login extends React.Component {
         password: this.state.password,
       })
       .then((response) => {
-        console.log(response);
-        if (response.data.error) {
-          this.setState({
-            error:
-              "Unijeli ste pogrešan pasvord ili korisnicko ime. Molimo Vas probajte ponovo ili se registrujte ukoliko nemate profil.",
-          });
-        } else {
-        }
+        localStorage.setItem("userid", response.data);
+        this.props.history.push("/product");
       })
       .catch((err) =>
         this.setState({
@@ -54,7 +48,7 @@ class Login extends React.Component {
   };
   renderError() {
     if (this.state.error) {
-      return <h1>{this.state.error}</h1>;
+      return <h1> {this.state.error} </h1>;
     }
   }
   render() {
@@ -71,8 +65,8 @@ class Login extends React.Component {
                 src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
                 alt="slika"
               />
-            </span>
-            <span className="header"> Log in </span>
+            </span>{" "}
+            <span className="header"> Log in </span>{" "}
             <div className="centralize" style={{ margin: "1%" }}>
               <div className="ui left icon input login-width">
                 <input
@@ -83,10 +77,10 @@ class Login extends React.Component {
                   placeholder="Username"
                   onChange={this.onInputChange}
                   value={this.state.username}
-                />
-                <i className="users icon"></i>
-              </div>
-            </div>
+                />{" "}
+                <i className="users icon"> </i>{" "}
+              </div>{" "}
+            </div>{" "}
             <div className="centralize" style={{ margin: "1%" }}>
               <div className="ui left icon input login-width">
                 <input
@@ -96,10 +90,10 @@ class Login extends React.Component {
                   placeholder="Password"
                   onChange={this.onInputChange}
                   value={this.state.password}
-                />
-                <i className="key icon"></i>
-              </div>
-            </div>
+                />{" "}
+                <i className="key icon"> </i>{" "}
+              </div>{" "}
+            </div>{" "}
             <div className="container-btn">
               <button className="ui button"> Login </button>{" "}
             </div>{" "}
@@ -112,7 +106,7 @@ class Login extends React.Component {
               </Link>{" "}
             </div>{" "}
           </form>{" "}
-          {this.renderError()}
+          {this.renderError()}{" "}
         </div>{" "}
       </div>
     );

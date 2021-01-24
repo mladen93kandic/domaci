@@ -108,13 +108,19 @@ class Signup extends React.Component {
         })
         .then((response) => {
           console.log(response);
-          this.props.history.push("/login");
+          console.log(response.status);
+
+          if (response.status === 201) {
+            this.props.history.push("/login");
+          }
         })
-        .catch((err) =>
-          this.setState({
-            error: "Došlo je do greške. Molimo Vas da pokušate ponovo.",
-          })
-        );
+        .catch((err) => {
+          console.log(err);
+          console.log("greska");
+          /*this.setState({
+                      error: "Došlo je do greške. Molimo Vas da pokušate ponovo.",
+                    });*/
+        });
     }
   };
 
@@ -164,7 +170,7 @@ class Signup extends React.Component {
                 />{" "}
                 <i className="key icon"> </i>{" "}
               </div>{" "}
-            </div>
+            </div>{" "}
             <div className="centralize" style={{ margin: "1%" }}>
               <div className="ui left icon input login-width">
                 <input
@@ -175,16 +181,16 @@ class Signup extends React.Component {
                   placeholder="Email"
                   onChange={this.onInputChange}
                   value={this.state.email}
-                />
-                <i className="mail icon"></i>
+                />{" "}
+                <i className="mail icon"> </i>{" "}
               </div>{" "}
             </div>{" "}
             <div className="centralize" style={{ margin: "1%" }}>
               <div className="ui left icon input login-width">
                 <select onChange={this.onInputChange} name="role">
-                  <option value="0">Basic user</option>
-                  <option value="1">Admin</option>
-                </select>
+                  <option value="0"> Basic user </option>{" "}
+                  <option value="1"> Admin </option>{" "}
+                </select>{" "}
               </div>{" "}
             </div>{" "}
             <div className="container-btn">

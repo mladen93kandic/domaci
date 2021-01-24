@@ -96,6 +96,12 @@ button:hover {
     color: white;
 }
 
+.item {
+    display: block;
+    margin: 2% auto;
+    text-align: center;
+}
+
 .headerbottom {
     font-family: "Times New Roman";
     font-size: 16px;
