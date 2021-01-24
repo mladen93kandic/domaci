@@ -4,8 +4,8 @@ const upload = require("express-fileupload")
 var cors = require('cors');
 const bodyParser = require("body-parser")
 const app = express();
-const User = require("./user");
-const Product = require("./product");
+const User = require("./models/user");
+const Product = require("./models/product");
 
 app.use(cors());
 app.use(upload());
