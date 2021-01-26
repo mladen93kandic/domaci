@@ -22,8 +22,6 @@ class Signup extends React.Component {
       this.setState({
         password: hashedPassword,
       });
-      console.log(pass);
-      console.log(this.state.password);
     } else {
       this.setState({
         [event.target.name]: event.target.value,
@@ -84,7 +82,6 @@ class Signup extends React.Component {
         error: "Password must have at least one capital letter.",
       });
     } else if (psw.length < 5 || psw.length > 25) {
-      console.log(psw);
       this.setState({
         error: "Password must have at least 5, and max 25 characters.",
       });

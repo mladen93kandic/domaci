@@ -70,7 +70,6 @@ class Product extends React.Component {
       fd.append("price", this.state.price);
       fd.append("quantity", this.state.quantity);
       fd.append("image", this.state.image);
-      console.log(this.state);
       axios
         .post("http://localhost:3001/product", fd)
         .then((res) => console.log(res))
@@ -101,7 +100,6 @@ class Product extends React.Component {
     }
   }
   render() {
-    console.log(this.state.error);
     const userid = this.state.userid;
     if (userid === null || typeof userid === "undefined" || userid === "") {
       this.props.history.push("/login");

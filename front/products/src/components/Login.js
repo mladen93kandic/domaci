@@ -18,8 +18,6 @@ class Login extends React.Component {
       this.setState({
         password: hashedPassword,
       });
-      console.log(pass);
-      console.log(this.state.password);
     }
     this.setState({
       [event.target.name]: event.target.value,
@@ -44,7 +42,6 @@ class Login extends React.Component {
           })
         }
         else {
-          console.log(response.data);
         localStorage.setItem("userid", response.data);
         this.props.history.push("/product");
         }

@@ -25,9 +25,7 @@ app.post("/product", async(req, res) => {
         try {
             const product = await Product.create(newProduct);
             res.status(201).json(product);
-            console.log("bbbb")
         } catch (error) {
-            console.log("aaaa")
             console.log(error);
             res.status(403).json(error)
 
@@ -46,9 +44,7 @@ app.post("/product", async(req, res) => {
                     try {
                         const product = await Product.create(newProduct);
                         res.status(201).json(product);
-                        console.log("bbbb")
                     } catch (error) {
-                        console.log("aaaa")
                         console.log(error);
                         res.status(403).json(error)
 
@@ -64,13 +60,10 @@ app.post("/product", async(req, res) => {
 
 app.post("/signup", async(req, res) => {
     const newUser = req.body;
-    console.log(newUser)
     try {
         const user = await User.create(newUser);
         res.status(201).json(user);
-        console.log("bbbb")
     } catch (error) {
-        console.log("aaaa")
         console.log(error);
         res.status(403).json(error)
 
@@ -79,7 +72,6 @@ app.post("/signup", async(req, res) => {
 app.get("/allproducts", async(req, res) => {
     try {
         const allProducts = await Product.find({});
-        console.log(allProducts)
         res.status(201).json(allProducts);
 
     } catch (error) {
@@ -91,21 +83,13 @@ app.get("/allproducts", async(req, res) => {
 app.post("/login", async(req, res) => {
     let userName = req.body.username;
     let password = req.body.password;
-    console.log(password);
-    console.log(userName);
 
     try {
         const user = await User.find({ username: userName }).exec();
-        console.log(user);
-        console.log(user.length);
-        console.log(req.body.password);
-        console.log(user[0].password);
-        console.log(passwordHash.verify(req.body.password, user[0].password));
         if (user.length === 0) {
             throw "User does not exist in database. ";
         } else if (user.length === 1) {
-            // if (req.body.password === user.password) {
-            if (passwordHash.verify(req.body.password, user[0].password)) {
+            if (passwordHash.verify(password, user[0].password)) {
                 res.status(201).json(user[0]._id);
             } else {
                 throw "Invalid password. ";
@@ -117,7 +101,19 @@ app.post("/login", async(req, res) => {
     }
 
 })
-
+app.post("/delete", async(req, res) => {
+    let id = req.body.id;
+    try {
+        const product = await Product.deleteOne({ _id: id }).exec();
+        console.log(product);
+        if (product.n === 0) { throw "Product does not exist in db" } else if (product.n === 1) {
+            res.status(201).json(id);
+        }
+    } catch (err) {
+        console.log(err)
+        res.json({ error: err })
+    }
+})
 
 connect()
     .then(() => app.listen(3001, () => {

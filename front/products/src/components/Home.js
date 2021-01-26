@@ -1,13 +1,17 @@
 import React from "react";
 import "../../src/App.css";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 class Home extends React.Component {
+  state = {
+    allProducts: [],
+    userid: localStorage.getItem("userid"),
+  };
   componentDidMount() {
     axios
       .get("http://localhost:3001/allproducts")
       .then((res) => {
-        console.log(res.data);
         this.setState({
           allProducts: res.data,
         });
@@ -15,37 +19,44 @@ class Home extends React.Component {
       .catch((err) => console.log(err));
   }
 
-  state = {
-    allProducts: [],
-    userid: localStorage.getItem("userid"),
+  handleDelete = (id) => {
+    axios.post("http://localhost:3001/delete", { id: id, })
+    .then((response)=> {
+      let newProducts = this.state.allProducts.filter((product) => product._id!==response.data);
+      this.setState({
+        allProducts: newProducts,
+      });
+    })
+    .catch((error) => console.log(error));
   };
 
-  renderButton = (productid) => {
-    console.log(productid);
-    console.log(this.state.userid);
-    if(productid===this.state.userid) {
+  renderButton = (product) => {
+    if(product.userid===this.state.userid) {
       return(
         <>
-        <button>Edit</button>
-        <button>Delete</button>
+        <Link to={`/edit/${product._id}`} className="ui blue button">
+          Edit
+        </Link>
+        <button className="ui red button" onClick={()=>this.handleDelete(product._id)}>Delete</button>
         </>
       );
     };
   };
   render() {
-    const images = this.state.allProducts.map((product) => {
-      console.log(product.image);
+    if(this.state.userid) {
+    var images = this.state.allProducts.map((product) => {
       return ( 
       <div key={product._id}>
         <img src={product.image} alt="slika" />
-        <div>{this.renderButton(product.userid)}</div>
+        <div>{this.renderButton(product)}</div>
       </div>
       );
     });
-    console.log(images);
-    console.log(this.state.allProducts);
-
-    return <div> {images} </div>;
+  } else {
+    images = [];
+    this.props.history.push("/login");
+  }
+    return <div> { images } </div>;
   }
 }
 
