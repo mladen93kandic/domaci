@@ -34,8 +34,20 @@ class Login extends React.Component {
         password: this.state.password,
       })
       .then((response) => {
+        if(response.data.error) {
+          console.log(response.data.error);
+          this.setState({
+            username: "",
+            password: "",
+            email: "",
+            error: response.data.error,
+          })
+        }
+        else {
+          console.log(response.data);
         localStorage.setItem("userid", response.data);
         this.props.history.push("/product");
+        }
       })
       .catch((err) =>
         this.setState({
@@ -74,7 +86,6 @@ class Login extends React.Component {
                   placeholder="Username"
                   id="user"
                   name="username"
-                  placeholder="Username"
                   onChange={this.onInputChange}
                   value={this.state.username}
                 />{" "}

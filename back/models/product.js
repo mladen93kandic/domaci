@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const Product = new mongoose.Schema({
     userid: {
@@ -35,11 +35,11 @@ const Product = new mongoose.Schema({
     },
     image: {
         type: String,
-        default: ""
+        default: "../front/products/public/default_image.svg"
     }
 
 
 }, { timestamps: true })
 
 
-module.exports = mongoose.model('Product', Product);
+module.exports = mongoose.model("Product", Product);

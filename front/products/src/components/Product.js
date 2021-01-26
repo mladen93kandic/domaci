@@ -129,7 +129,6 @@ class Product extends React.Component {
                     placeholder="Name"
                     id="name"
                     name="name"
-                    placeholder="Name"
                     onChange={this.onInputChange}
                     value={this.state.name}
                   />{" "}
@@ -194,7 +193,7 @@ class Product extends React.Component {
               </div>{" "}
               {this.renderError()}{" "}
               <div className="item">
-                <a className="ui item">{this.renderLogOut()}</a>
+                <a href="." className="ui item">{this.renderLogOut()}</a>
               </div>
               <div className="item">
                 <Link to="/home" className="ui gray button">

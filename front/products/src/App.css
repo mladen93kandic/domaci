@@ -195,7 +195,7 @@ select {
     height: 50px;
     border-radius: 25px;
     background: #fff;
-    background: linear-gradient(bottom, #7579ff, #b224ef);
+    background: linear-gradient(to bottom, #7579ff, #b224ef);
     position: relative;
     z-index: 1;
     transition: all 0.4s;

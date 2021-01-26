@@ -17,17 +17,35 @@ class Home extends React.Component {
 
   state = {
     allProducts: [],
+    userid: localStorage.getItem("userid"),
   };
 
+  renderButton = (productid) => {
+    console.log(productid);
+    console.log(this.state.userid);
+    if(productid===this.state.userid) {
+      return(
+        <>
+        <button>Edit</button>
+        <button>Delete</button>
+        </>
+      );
+    };
+  };
   render() {
     const images = this.state.allProducts.map((product) => {
       console.log(product.image);
-      return <img src={product.image} alt="slika" />;
+      return ( 
+      <div key={product._id}>
+        <img src={product.image} alt="slika" />
+        <div>{this.renderButton(product.userid)}</div>
+      </div>
+      );
     });
     console.log(images);
     console.log(this.state.allProducts);
 
-    return <div>{images}</div>;
+    return <div> {images} </div>;
   }
 }
 

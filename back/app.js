@@ -1,11 +1,12 @@
 const express = require("express");
-const mongoose = require('mongoose')
-const upload = require("express-fileupload")
-var cors = require('cors');
-const bodyParser = require("body-parser")
+const mongoose = require("mongoose");
+const upload = require("express-fileupload");
+var cors = require("cors");
+const bodyParser = require("body-parser");
 const app = express();
 const User = require("./models/user");
 const Product = require("./models/product");
+
 
 app.use(cors());
 app.use(upload());
@@ -88,16 +89,26 @@ app.get("/allproducts", async(req, res) => {
 })
 app.post("/login", async(req, res) => {
     let userName = req.body.username;
+    let password = req.body.password;
+    console.log(password);
     console.log(userName);
 
-    const user = await User.find({ username: userName });
-    console.log(user);
-    console.log(user.length);
-    if (user.length === 1) {
-        res.status(201).json(user[0]._id);
-    } else {
-        res.status(403).json("ne postoji korisnik")
-
+    try {
+        const user = await User.find({ username: userName }).exec();
+        console.log(user);
+        console.log(user.length);
+        if (user.length === 0) {
+            throw "Korisnik ne postoji u bazi";
+        } else if (user.length === 1) {
+            if (req.body.password === user.password) {
+                res.status(201).json(user[0]._id);
+            } else {
+                throw "Unijeli ste pogrešan password";
+            }
+        }
+    } catch (err) {
+        console.log(err);
+        res.json({ error: err });
     }
 
 })

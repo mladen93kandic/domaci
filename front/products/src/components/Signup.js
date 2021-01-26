@@ -152,7 +152,6 @@ class Signup extends React.Component {
                   placeholder="Username"
                   id="user"
                   name="username"
-                  placeholder="Username"
                   onChange={this.onInputChange}
                   value={this.state.username}
                 />{" "}
