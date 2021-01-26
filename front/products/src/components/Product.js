@@ -33,11 +33,11 @@ class Product extends React.Component {
       typeof this.state.price === "undefined"
     ) {
       this.setState({
-        error: "Morate unijeti ime i cijenu proizvoda",
+        error: "Please enter price and name of the product. ",
       });
     } else if (this.state.name.length < 3 || this.state.name.length > 15) {
       this.setState({
-        error: "Ime proizvoda mora sadržati najmanje 3, a najviše 15 karaktera",
+        error: "Product name must have at least 3, and max 15 characters. ",
       });
     } else if (
       (this.state.description !== "" && this.state.name.description < 10) ||
@@ -45,20 +45,20 @@ class Product extends React.Component {
     ) {
       this.setState({
         error:
-          "Opis proizvoda mora sadržati najmanje 10, a najviše 150 karaktera",
+          "Description must have at least 10, and max 150 characters. ",
       });
     } else if (this.state.price < 1 || this.state.price > 10000) {
       this.setState({
         error:
-          "Cijena proizvoda ne smije biti manja od 1 ni veca od 10.000 eura",
+          "Price cannot be less than 1 or more than 10.000 euros. ",
       });
     } else if (this.state.quantity < 1 || this.state.quantity > 10) {
       this.setState({
-        error: "Kolicina proizvoda ne smije biti manja od 1 ni veca od 10",
+        error: "Quantity cannot be less than 1 or more than 10. ",
       });
     } else if (this.state.image !== "" && this.state.image.size > 300000) {
       this.setState({
-        error: "Velicina slike ne smije biti veca od 3MB",
+        error: "Image size cannot be more than 3MB. ",
       });
     } else {
       console.log(localStorage.getItem("userid"));

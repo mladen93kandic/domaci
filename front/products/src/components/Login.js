@@ -54,7 +54,7 @@ class Login extends React.Component {
           username: "",
           password: "",
           email: "",
-          error: "Došlo je do greške. Molimo Vas da pokušate ponovo.",
+          error: "Error occured.Please try again. ",
         })
       );
   };

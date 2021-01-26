@@ -69,32 +69,32 @@ class Signup extends React.Component {
       this.state.username.length > 20
     ) {
       this.setState({
-        error: "Username mora sadržati najmanje 3, a najviše 20 karaktera",
+        error: "Username must have at least 3, and no more than 20 characters.",
       });
     } else if (this.hasLowerCase(psw) === false) {
       this.setState({
-        error: "Password mora sadržati bar jedno malo slovo",
+        error: "Password must have at least one small letter. ",
       });
     } else if (this.hasNumber(psw) === false) {
       this.setState({
-        error: "Password mora sadržati bar jednu cifru",
+        error: "Password must have at least one digit.",
       });
     } else if (brVelikihSlova === 0) {
       this.setState({
-        error: "Password mora sadržati bar jedno veliko slovo",
+        error: "Password must have at least one capital letter.",
       });
     } else if (psw.length < 5 || psw.length > 25) {
       console.log(psw);
       this.setState({
-        error: "Password mora sadržati najmanje 5, a najviše 25 karaktera",
+        error: "Password must have at least 5, and max 25 characters.",
       });
     } else if (checkMail === false) {
       this.setState({
-        error: "Morate unijeti ispravan email",
+        error: "You have to input valid email",
       });
     } else if (this.state.email.length < 5 || this.state.username.length > 35) {
       this.setState({
-        error: "Email mora sadržati najmanje 5, a najviše 35 karaktera",
+        error: "Email must have at least 5, and max 35 xharacters. ",
       });
     } else {
       console.log(this.state);

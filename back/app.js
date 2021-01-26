@@ -102,13 +102,13 @@ app.post("/login", async(req, res) => {
         console.log(user[0].password);
         console.log(passwordHash.verify(req.body.password, user[0].password));
         if (user.length === 0) {
-            throw "Korisnik ne postoji u bazi";
+            throw "User does not exist in database. ";
         } else if (user.length === 1) {
             // if (req.body.password === user.password) {
             if (passwordHash.verify(req.body.password, user[0].password)) {
                 res.status(201).json(user[0]._id);
             } else {
-                throw "Unijeli ste pogrešan password";
+                throw "Invalid password. ";
             }
         }
     } catch (err) {
