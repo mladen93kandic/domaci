@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const upload = require("express-fileupload");
 var cors = require("cors");
 const bodyParser = require("body-parser");
+const passwordHash = require("password-hash/lib/password-hash");
 const app = express();
 const User = require("./models/user");
 const Product = require("./models/product");
@@ -97,10 +98,14 @@ app.post("/login", async(req, res) => {
         const user = await User.find({ username: userName }).exec();
         console.log(user);
         console.log(user.length);
+        console.log(req.body.password);
+        console.log(user[0].password);
+        console.log(passwordHash.verify(req.body.password, user[0].password));
         if (user.length === 0) {
             throw "Korisnik ne postoji u bazi";
         } else if (user.length === 1) {
-            if (req.body.password === user.password) {
+            // if (req.body.password === user.password) {
+            if (passwordHash.verify(req.body.password, user[0].password)) {
                 res.status(201).json(user[0]._id);
             } else {
                 throw "Unijeli ste pogrešan password";
