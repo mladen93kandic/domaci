@@ -7,24 +7,32 @@ class Signup extends React.Component {
   state = {
     username: "",
     password: "",
+    inputPassword: "",
     email: "",
     role: 0,
     error: "",
+    usernameMessage: "true",
+    passwordMessage: "true",
+    emailMessage: "true",
   };
   hasNumber = (myString) => {
     return /\d/.test(myString);
   };
 
   onInputChange = (event) => {
+    const message = event.target.name + "Message";
     if (event.target.type === "password") {
       let pass = document.getElementById("pass").value;
       let hashedPassword = passwordHash.generate(pass);
       this.setState({
         password: hashedPassword,
+        inputPassword: pass,
+        passwordMessage: "false",
       });
     } else {
       this.setState({
         [event.target.name]: event.target.value,
+        [message]: "false",
       });
     }
   };
@@ -60,7 +68,7 @@ class Signup extends React.Component {
       typeof this.state.role === "undefined"
     ) {
       this.setState({
-        error: "Morate popuniti sva polja",
+        error: "You must fill all fields",
       });
     } else if (
       this.state.username.length < 3 ||
@@ -91,11 +99,9 @@ class Signup extends React.Component {
       });
     } else if (this.state.email.length < 5 || this.state.username.length > 35) {
       this.setState({
-        error: "Email must have at least 5, and max 35 xharacters. ",
+        error: "Email must have at least 5, and max 35 characters. ",
       });
     } else {
-      console.log(this.state);
-
       axios
         .post("http://localhost:3001/signup", {
           username: this.state.username,
@@ -104,19 +110,45 @@ class Signup extends React.Component {
           role: this.state.role,
         })
         .then((response) => {
-          console.log(response);
-          console.log(response.status);
-
-          if (response.status === 201) {
+          console.log(response.data);
+          if (!response.data.error) {
+            console.log(response.data);
             this.props.history.push("/login");
+          } else if (response.data.error) {
+            if (response.data.error.errors) {
+              let nodeError = response.data.error.errors;
+              console.log(nodeError);
+              let errArray = [];
+              var x;
+              for (x in nodeError) {
+                if (x === "username") {
+                  errArray.push(nodeError.username.message);
+                }
+                if (x === "password") {
+                  errArray.push(nodeError.password.message);
+                }
+                if (x === "email") {
+                  errArray.push(nodeError.email.message);
+                }
+              }
+
+              let nodeErrorMessage = errArray.map((el) => <p key={el}>{el}</p>);
+
+              this.setState({
+                error: nodeErrorMessage,
+              });
+            } else {
+              this.setState({
+                error: response.data.error,
+              });
+            }
           }
         })
         .catch((err) => {
           console.log(err);
-          console.log("greska");
-          /*this.setState({
-                      error: "Došlo je do greške. Molimo Vas da pokušate ponovo.",
-                    });*/
+          this.setState({
+            error: "Došlo je do greške. Molimo Vas da pokušate ponovo.",
+          });
         });
     }
   };
@@ -154,6 +186,10 @@ class Signup extends React.Component {
                 />{" "}
                 <i className="users icon"> </i>{" "}
               </div>{" "}
+              <span className={this.state.usernameMessage}>
+                Username is required, minimal length is 3 characters, maximal
+                length is 20 characters
+              </span>
             </div>{" "}
             <div className="centralize" style={{ margin: "1%" }}>
               <div className="ui left icon input login-width">
@@ -163,16 +199,22 @@ class Signup extends React.Component {
                   name="password"
                   placeholder="Password"
                   onChange={this.onInputChange}
+                  value={this.state.inputPassword}
                 />{" "}
                 <i className="key icon"> </i>{" "}
               </div>{" "}
+              <span className={this.state.passwordMessage}>
+                Password is required, minimal length is 5 characters, maximal
+                length is 25 characters, and it must have at least one digit,
+                small and capital letter
+              </span>
             </div>{" "}
             <div className="centralize" style={{ margin: "1%" }}>
               <div className="ui left icon input login-width">
                 <input
                   className="input-login"
                   id="mail"
-                  type="email"
+                  type="text"
                   name="email"
                   placeholder="Email"
                   onChange={this.onInputChange}
@@ -180,6 +222,10 @@ class Signup extends React.Component {
                 />{" "}
                 <i className="mail icon"> </i>{" "}
               </div>{" "}
+              <span className={this.state.emailMessage}>
+                Email is required, minimal length is 5 characters, maximal
+                length is 35 characters
+              </span>
             </div>{" "}
             <div className="centralize" style={{ margin: "1%" }}>
               <div className="ui left icon input login-width">

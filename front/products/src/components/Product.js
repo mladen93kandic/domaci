@@ -44,13 +44,11 @@ class Product extends React.Component {
       this.state.name.description > 150
     ) {
       this.setState({
-        error:
-          "Description must have at least 10, and max 150 characters. ",
+        error: "Description must have at least 10, and max 150 characters. ",
       });
     } else if (this.state.price < 1 || this.state.price > 10000) {
       this.setState({
-        error:
-          "Price cannot be less than 1 or more than 10.000 euros. ",
+        error: "Price cannot be less than 1 or more than 10.000 euros. ",
       });
     } else if (this.state.quantity < 1 || this.state.quantity > 10) {
       this.setState({
@@ -72,8 +70,42 @@ class Product extends React.Component {
       fd.append("image", this.state.image);
       axios
         .post("http://localhost:3001/product", fd)
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
+        .then((response) => {
+          if (!response.data.error) {
+            this.props.history.push("/home");
+          } else if (response.data.error) {
+            if (response.data.error.errors) {
+              let nodeError = response.data.error.errors;
+              console.log(nodeError);
+              let errArray = [];
+              var x;
+              for (x in nodeError) {
+                if (x === "name") {
+                  errArray.push(nodeError.name.message);
+                }
+                if (x === "price") {
+                  errArray.push(nodeError.price.message);
+                }
+                if (x === "quantity") {
+                  errArray.push(nodeError.quantity.message);
+                }
+              }
+              let nodeErrorMessage = errArray.map((el) => <p key={el}>{el}</p>);
+              this.setState({
+                error: nodeErrorMessage,
+              });
+            } else {
+              this.setState({
+                error: response.data.error,
+              });
+            }
+          }
+        })
+        .catch((err) => {
+          this.setState({
+            error: err,
+          });
+        });
     }
   };
   renderError() {
@@ -94,7 +126,7 @@ class Product extends React.Component {
           type="submit"
           onClick={this.handleLogOut}
         >
-          Logout
+          Logout{" "}
         </button>
       );
     }
@@ -174,14 +206,15 @@ class Product extends React.Component {
                     <div className="ui left icon input login-width">
                       <label htmlFor="file">
                         {" "}
-                        Select product image to upload
-                      </label>
+                        Select product image to upload{" "}
+                      </label>{" "}
                       <input
+                        className="center"
                         type="file"
                         name="file"
                         placeholder="File"
                         onChange={this.onFileChange}
-                      />
+                      />{" "}
                     </div>{" "}
                   </div>{" "}
                 </div>{" "}
@@ -191,16 +224,19 @@ class Product extends React.Component {
               </div>{" "}
               {this.renderError()}{" "}
               <div className="item">
-                <a href="." className="ui item">{this.renderLogOut()}</a>
-              </div>
+                <a href="." className="ui item">
+                  {" "}
+                  {this.renderLogOut()}{" "}
+                </a>{" "}
+              </div>{" "}
               <div className="item">
                 <Link to="/home" className="ui gray button">
-                  See all products
-                </Link>
-              </div>
+                  See all products{" "}
+                </Link>{" "}
+              </div>{" "}
             </form>{" "}
           </div>{" "}
-        </div>
+        </div>{" "}
       </div>
     );
   }
