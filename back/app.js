@@ -19,6 +19,16 @@ const connect = () => {
 };
 
 app.post("/product", async(req, res) => {
+    let price = req.body.price;
+    let name = req.body.name;
+    try {
+        if (!price || !name) {
+            throw "You must enter name and price"
+        }
+    } catch (error) {
+        console.log(error);
+        res.json({ error: error });
+    }
     let productName = req.body.name;
     const productExist = await Product.find({ name: productName }).exec();
     console.log(productExist.length === 1);
